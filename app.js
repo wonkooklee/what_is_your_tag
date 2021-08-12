@@ -48,7 +48,6 @@ const controller = (function() {
     searchByTag(event, keyword) {
       fetch(`https://source.unsplash.com/featured/?${keyword.toLowerCase()}`)
       .then((response) => {
-        console.log(response);
         document.body.style.backgroundImage = `url(${response.url})`;
       });
     },
