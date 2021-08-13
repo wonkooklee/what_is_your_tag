@@ -4,6 +4,7 @@ Made by Wonkook Lee (oneook)
 © All Rights Reserved
 ************************************************************/
 
+"use strict"
 
 const dataModule = (function() {
 
@@ -45,7 +46,7 @@ const controller = (function() {
 
   return {
 
-    searchByTag(event, keyword) {
+    searchByTag(_, keyword) {
       fetch(`https://source.unsplash.com/featured/?${keyword.toLowerCase()}`)
       .then((response) => {
         document.body.style.backgroundImage = `url(${response.url})`;
@@ -74,7 +75,7 @@ const UIController = (function() {
   DOM.tagContainer.addEventListener('click', event => {
     if (!event.target.classList.contains('tag')) return;
     const keyword = event.target.dataset.keyword;
-    controller.searchByTag(event, keyword)
+    controller.searchByTag(null, keyword)
   });
 
   DOM.addTag.addEventListener('keydown', e => {
