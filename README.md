@@ -1,3 +1,6 @@
+
+![](https://media.vlpt.us/images/oneook/post/a0ca1b7f-462e-4b32-b114-faadefe15158/ezgif-7-e866f55ccdcc.gif)
+
 ---
 # *What is Your Tag?* 🏷
 ---
@@ -362,4 +365,3 @@ contact: `const.wonkook@gmail.com`
 Thank you.
 
 🙏🏻 잘못된 정보가 있다면 지적해주세요
-![](https://images.velog.io/images/oneook/post/b77a8951-215a-49d0-a61b-0a78723d22b8/shckinghand.png)
