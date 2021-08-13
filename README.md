@@ -1,4 +1,3 @@
-
 ![](https://media.vlpt.us/images/oneook/post/a0ca1b7f-462e-4b32-b114-faadefe15158/ezgif-7-e866f55ccdcc.gif)
 
 ---
@@ -44,7 +43,8 @@
 
 ![](https://images.velog.io/images/oneook/post/24d5cf76-f8b4-4c3d-903c-cba7b9b7e75e/ezgif-2-39bc9be1daf0.gif)
 
->**초기 화면에서 키워드를 하나씩 입력 후 Enter를 누르면 태그가 추가되면서 배경이 전환된다.**
+>**초기 화면에서 키워드를 입력하고 Enter를 누르면 태그가 추가되면서 배경이 전환된다.
+생성된 태그를 누르면 해당 키워드의 다른 랜덤 이미지를 출력한다.**
 
 입력 필드에 원하는 키워드를 입력하고 Enter를 입력하면 FetchAPI가 Unsplash 사이트에서 키워드에 해당되는 무작위의 이미지를 가져오게 된다. 이미지를 성공적으로 받아온다면(`then`) `body`의 `background-image`가 업데이트된다.
 
@@ -61,13 +61,14 @@
 
 ## 3. Unsplash에서 키워드로 랜덤 이미지 가져오기 📷
 
-No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특정 조건에 맞는 이미지를 url로 받아올 수 있다. 심지어 자체 API도 가지고 있으니 잘 살펴보고 활용하도록 하자.
+![](https://images.velog.io/images/oneook/post/6d06fe33-4b36-4ceb-9505-8a8d982a6822/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-08-14%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%2012.10.05.png)
+
+No License 이미지 소스로 유명한 unsplash.com은 정말 고맙게도 특정 조건에 맞는 이미지를 url로 받아올 수 있다. 심지어 자체 API도 가지고 있으니 잘 살펴보고 활용하도록 하자.
 
 **[출처: Unsplash Source](https://source.unsplash.com/)**
 
----
 
-### 3-1. 특정 유저의 사진 랜덤으로 가져오기 🏙
+### 🏙 특정 유저의 사진 랜덤으로 가져오기
 
 **Parameters**
 `https://source.unsplash.com/user/{USERNAME}`
@@ -80,9 +81,9 @@ No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특
 **HTML Example**
 `<img src="https://source.unsplash.com/user/erondu/1600x900">`
 
----
+<br>
 
-### 3-2. 특정 유저가 좋아요 누른 사진 랜덤으로 가져오기 🌉
+### 🌉 특정 유저가 좋아요 누른 사진 랜덤으로 가져오기
 
 **Parameters**
 `https://source.unsplash.com/user/{USERNAME}/likes`
@@ -94,9 +95,9 @@ No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특
 **HTML Example**
 `<img src="https://source.unsplash.com/user/jackie/likes/1600x900">`
 
----
+<br>
 
-### 3-3. 특정 유저의 콜렉션 속 사진들 랜덤으로 가져오기 🌄
+### 🌄 특정 유저의 콜렉션 속 사진들 랜덤으로 가져오기
 
 **Parameters**
 `https://source.unsplash.com/collection/{COLLECTION ID}`
@@ -110,9 +111,9 @@ No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특
 **HTML Example**
 `<img src="https://source.unsplash.com/collection/190727/1600x900">`
 
----
+<br>
 
-### 3-4. (내가 쓸 것) 특정 키워드의 랜덤 사진 가져오기 🌟
+### 🌟 (내가 쓸 것) 특정 키워드의 랜덤 사진 가져오기
 
 **Parameters**
 `https://source.unsplash.com/featured/?{KEYWORD},{KEYWORD}`
@@ -122,6 +123,34 @@ No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특
 **Search with size**
 `https://source.unsplash.com/1600x900/?nature,water`
 
+<br>
+
+### 🪄 적용
+`fetch()`를 사용하여 unsplash 서버에 자료를 요청한다. 만약 재요청 없이 url 그대로 스타일에 넣는다면 최초 페이지 파싱때 받아온 이미지가 더 이상 갱신되지 않는다.
+
+```js
+// Controller Module (Public Method)
+searchByTag(_, keyword) {
+  
+      // 전달된 키워드를 소문자로 바꾸어 주소 문자열에 넣은 뒤 fetch API로 새로운 이미지 요청
+      fetch(`https://source.unsplash.com/featured/?${keyword.toLowerCase()}`)
+      .then((response) => {
+        // 만약 잘 들어온다면(resolve) url로 배경이미지를 바꿔준다
+        document.body.style.backgroundImage = `url(${response.url})`;
+        
+      });
+    }
+
+// UI Controller Module (Private Method)
+DOM.tagContainer.addEventListener('click', event => {
+  
+    if (!event.target.classList.contains('tag')) return;
+    const keyword = event.target.dataset.keyword;
+    // input의 입력값을 인자로 전달
+    controller.searchByTag(null, keyword)
+  
+  });
+```
 
 
 <br>
@@ -133,7 +162,7 @@ No License 이미지 소스로 유명한 unsplace.com은 정말 고맙게도 특
 
 ### 4-1. 구조 도식화로 보는 모듈 패턴 🔍
 
-![](https://images.velog.io/images/oneook/post/8e9889a4-cb0e-4af0-b084-efa0b7f92a13/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-08-13%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%202.09.12.png)
+![](https://images.velog.io/images/oneook/post/e9471ad6-535e-4397-8299-f7ef0402ac97/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-08-14%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%202.38.12.png)
 
 >
 #### 모듈(Module)이란?
@@ -223,7 +252,7 @@ const controller = (function() {
 >
   return {
 >     // Public Methods
-    searchByTag(event, keyword) {
+    searchByTag(_, keyword) {
       fetch(`https://source.unsplash.com/featured/?${keyword.toLowerCase()}`)
       .then((response) => {
         document.body.style.backgroundImage = `url(${response.url})`;
@@ -248,7 +277,7 @@ const controller = (function() {
 >
     - 키워드 태그에 클릭 이벤트 발생시 **컨트롤러 모듈의 searchByTag 호출**
     - `input`에서 Enter 키 입력 발생시 **컨트롤러 모듈의 addNewTag 호출**
->```js
+```js
 const UIController = (function() {
 >
 >   // ONLY Private Fields
@@ -256,7 +285,7 @@ const UIController = (function() {
   DOM.tagContainer.addEventListener('click', event => {
     if (!event.target.classList.contains('tag')) return;
     const keyword = event.target.dataset.keyword;
-    controller.searchByTag(event, keyword)
+    controller.searchByTag(null, keyword)
   });
 >
   DOM.addTag.addEventListener('keydown', e => {
@@ -281,7 +310,7 @@ const UIController = (function() {
 
 
 
-#### 4-3-1. searchByTag( ) 📡
+#### 4-3-1. <span style="font-size:24px;color:#1133F5">searchByTag( ) 📡</span>
 ```js
 // 컨트롤러 모듈 (PUBLIC)
 searchByTag(event, keyword) {
@@ -295,7 +324,7 @@ searchByTag(event, keyword) {
 
 ---
 
-#### 4-3-2. addNewTag( ) 🏷
+#### 4-3-2. <span style="font-size:24px;color:#1133F5">addNewTag( ) 🏷</span>
 ```js
 // 컨트롤러 모듈 (PRIVATE)
 const tagHTML = function (keyword, [R, G, B]) {
@@ -318,7 +347,7 @@ addNewTag(target, parentNode) {
 
 ---
 
-#### 4-3-3. 랜덤 컬러와 관련된 내부 함수 🌈
+#### 4-3-3. <span style="font-size:24px;color:#1133F5">랜덤 컬러와 관련된 내부 함수 🌈</span>
 ```js
 // 컨트롤러 모듈 (PRIVATE)
   const randomRGB = function(min, max) {
@@ -347,6 +376,26 @@ addNewTag(target, parentNode) {
 
 !youtube[QuERmB4sRGI]
 
+<br>
+
+---
+<br>
+
+## 6. 썸네일 메이커 개선 현황 🙇🏻🙇🏻🙇🏻
+
+>- 랜덤 색 출력하는 것처럼 랜덤 이미지도 나오는 버튼이 있으면 어떨까 고민중
+- 이미지 URL 입력값 Validation 방법 고민중
+- 자료 구조에 Class, Instance 패턴을 적용할지, 모듈 패턴을 적용할지 고민중
+- 버튼 클릭시 active, inactive 스타일 변경해주는 기능 하나의 메소드로 통합 완료
+- 디자인 구성, 레이아웃 다시 검토 예정
+
+
+많은 분들께서 과분할 정도의 관심을 보내주셨고, 꾸준히 개선하지 않으면 큰일 날 것 같네요...
+좋은 개선 의견을 보내주시는 분들도 계시고, 제가 할 수 있는 범위 내에서 최선을 다하겠습니다.
+
+감사합니다. 🥰
+
+@oneook
 
 <br>
 
@@ -365,3 +414,4 @@ contact: `const.wonkook@gmail.com`
 Thank you.
 
 🙏🏻 잘못된 정보가 있다면 지적해주세요
+![](https://images.velog.io/images/oneook/post/b77a8951-215a-49d0-a61b-0a78723d22b8/shckinghand.png)
