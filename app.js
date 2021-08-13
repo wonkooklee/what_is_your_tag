@@ -53,7 +53,7 @@ const controller = (function() {
     },
 
     addNewTag(target, parentNode) {
-      const newColor = getRandomRGB(190, 255);
+      const newColor = getRandomRGB(180, 230);
       const newHTML = tagHTML(target.value, newColor);
       parentNode.insertAdjacentHTML('beforeend', newHTML);
       this.searchByTag(null, target.value);
