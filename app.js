@@ -46,7 +46,7 @@ const controller = (function() {
 
   return {
 
-    searchByTag(_, keyword) {
+    searchByTag(keyword) {
       fetch(`https://source.unsplash.com/featured/?${keyword.toLowerCase()}`)
       .then((response) => {
         document.body.style.backgroundImage = `url(${response.url})`;
@@ -57,7 +57,7 @@ const controller = (function() {
       const newColor = getRandomRGB(180, 230);
       const newHTML = tagHTML(target.value, newColor);
       parentNode.insertAdjacentHTML('beforeend', newHTML);
-      this.searchByTag(null, target.value);
+      this.searchByTag(target.value);
       target.value = '';
       target.focus();
     },
@@ -75,7 +75,7 @@ const UIController = (function() {
   DOM.tagContainer.addEventListener('click', event => {
     if (!event.target.classList.contains('tag')) return;
     const keyword = event.target.dataset.keyword;
-    controller.searchByTag(null, keyword)
+    controller.searchByTag(keyword)
   });
 
   DOM.addTag.addEventListener('keydown', e => {
