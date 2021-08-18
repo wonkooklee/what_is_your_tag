@@ -11,18 +11,18 @@ const dataModule = (function () {
     addTag: document.querySelector(".addTag"),
     container: document.querySelector(".container"),
     tagContainer: document.querySelector(".container__tag"),
-    tags: document.querySelectorAll(".tag")
+    tags: document.querySelectorAll(".tag"),
   };
 
   return {
     getDOM() {
       return DOM;
-    }
+    },
   };
 })();
 
 const controller = (function () {
-  let keywordList = [];   //태그 키워드 저장 리스트
+  let keywordList = []; //태그 키워드 저장 리스트
 
   const tagHTML = function (keyword, [R, G, B]) {
     return `<article style="background-color: rgba(${R}, ${G}, ${B}, 0.7);" class="tag" data-keyword="${keyword}">#${keyword}</article>`;
@@ -50,18 +50,18 @@ const controller = (function () {
       });
     },
 
-    addNewTag(target, parentNode) { //배열안에 이미 검색했던 태그가 있으면 Alert 창을 띄움
-      const newColor = getRandomRGB(180, 230);
-      const newHTML = tagHTML(target.value, newColor);
-
+    addNewTag(target, parentNode) {
+      //배열안에 이미 검색했던 태그가 있으면 Alert 창을 띄움
       if (!keywordList.includes(target.value)) {
+        const newColor = getRandomRGB(180, 230);
+        const newHTML = tagHTML(target.value, newColor);
         parentNode.insertAdjacentHTML("beforeend", newHTML);
         this.searchByTag(target.value);
       } else alert("Duplicate Tag 🙄");
 
       target.value = "";
       target.focus();
-    }
+    },
   };
 })();
 
